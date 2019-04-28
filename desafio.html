@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>API DE NOTICIAS</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		
+		<div class="form-inline my-2 my-lg-0">
+			<input class="form-control mr-sm-2" type="search" placeholder="Procure a noticia" aria-label="Pesquisar" id="campoPesquisa">
+			
+		</div>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="#">Home <span class="sr-only">(página atual)</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Link</a>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						Dropdown
+					</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="#">Ação</a>
+						<a class="dropdown-item" href="#">Outra ação</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Algo mais aqui</a>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link disabled" href="#">Desativado</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<h1 id="te">NOTICIARIO</h1>
+		<div class="row" id="corpoNoticiario">
+
+
+		</div>
+		
+
+
+	</div>
+	
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script>
+		const url='https://newsapi.org/v2/top-headlines?country=us&apiKey=2c4669ce8f334e73a1d31b2388c7eae1';
+		var name='https://newsapi.org/v2/top-headlines?country=br&apiKey=2c4669ce8f334e73a1d31b2388c7eae1';
+		fetch(url)
+		.then(dados=>dados.json())
+		.then(dados=>{
+			console.log(dados.articles);
+			montarNoticias(dados);
+		})
+
+		function montarNoticias(dados){
+			let corpoNoticiario=document.getElementById("corpoNoticiario");
+			let corpo="";
+			for(let i=0;i<dados.articles.length;i++){
+
+				
+				corpo+=` 
+				<div class="col-sm-4 filtro" data-info="${dados.articles[i].title}">
+				<div class="card" style="width: 18rem;">
+				<img class="card-img-top" src="${dados.articles[i].urlToImage}" alt="Imagem de capa do card">
+				<div class="card-body">
+				<h5 class="card-title">${dados.articles[i].title}</h5>
+				<p class="card-text">
+				${dados.articles[i].description}
+				</p>
+				<a href="${dados.articles[i].url}" class="btn btn-outline-info" target="_BLANK">Ver</a>
+				</div>
+				</div>		
+				</div>
+				`
+				
+			}
+			
+			corpoNoticiario.innerHTML=corpo;
+
+		}	
+
+		let campoPesquisa=document.getElementById("campoPesquisa");
+		let filtro=document.getElementsByClassName("filtro");
+		
+		campoPesquisa.addEventListener("keyup",function(){
+			//console.log(campoPesquisa.value);
+			let num;
+			for(let i=0;i<filtro.length;i++){
+				let txt=filtro[i].getAttribute("data-info");
+				for(let x=0;x<txt.length;x++){
+					if(campoPesquisa.value == txt){
+						num=1	
+					}else{
+						num=0
+					}
+				}
+				
+			}
+			console.log(num);
+		})
+		
+		function filtrar(){
+
+		}
+	</script>
+
+</body>
+</html>
